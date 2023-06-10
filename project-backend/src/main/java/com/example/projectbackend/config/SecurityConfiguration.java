@@ -3,12 +3,12 @@ package com.example.projectbackend.config;
 import com.alibaba.fastjson.JSONObject;
 import com.example.projectbackend.entity.RestBean;
 import com.example.projectbackend.service.AuthorizeService;
+import com.example.projectbackend.service.impl.AuthorizeServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,15 +36,16 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
 
     @Resource
-    AuthorizeService   authorizeService;
+    AuthorizeService authorizeServiceImpl;
 
     @Resource
     DataSource dataSource;
    //3.1.0写法
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,PersistentTokenRepository tokenRepository) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -58,10 +59,10 @@ public class SecurityConfiguration {
                 )
                 .rememberMe((remember) -> remember
                         .rememberMeParameter("remember")
-                        .tokenRepository(this.tokenRepository())
+                        .tokenRepository(tokenRepository)
                         .tokenValiditySeconds(3600 * 24 * 7)
                 )
-                .userDetailsService(authorizeService)
+                .userDetailsService(authorizeServiceImpl)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
@@ -74,7 +75,7 @@ public class SecurityConfiguration {
      PersistentTokenRepository tokenRepository(){
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
-        jdbcTokenRepository.setCreateTableOnStartup(true);
+        jdbcTokenRepository.setCreateTableOnStartup(false);
         return jdbcTokenRepository;
     }
     // corsConfigurationSource名字不能改，竟然是根据名字来的:C

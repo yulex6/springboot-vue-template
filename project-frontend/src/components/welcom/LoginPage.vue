@@ -28,7 +28,7 @@ const login = () =>{
 </script>
 
 <template>
-  <div style="text-align: center; margin:20px">
+  <div style="text-align: center; margin:50px">
     <div style="margin-top: 150px">
       <div style="font-size: 25px; font-weight: bold">登录</div>
     </div>
