@@ -1,5 +1,5 @@
 <script setup>
-import {get} from "../net";
+import {get} from "@/net";
 import {ElMessage} from "element-plus";
 import router from "../router";
 import {useStore} from "@/stores";

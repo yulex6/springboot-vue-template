@@ -20,7 +20,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
     @Resource
     UserMapper mapper;
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         User user = (User)authentication.getPrincipal();
