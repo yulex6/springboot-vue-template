@@ -2,14 +2,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/study?useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: yzl135
+    username: ****
+    password: ****
   mail:
-    host: smtp.163.com
-    username: yzl17841162665@163.com
-    password: NRUOMXGOPQKHPIQB
+    host: ***
+    username: *****
+    password: *****
     properties:
-      from: yzl17841162665@163.com
+      from: ******
       mail:
         smtp:
           socketFactory:
