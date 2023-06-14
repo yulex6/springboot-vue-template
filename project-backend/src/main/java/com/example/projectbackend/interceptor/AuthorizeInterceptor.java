@@ -2,6 +2,7 @@ package com.example.projectbackend.interceptor;
 
 import com.example.projectbackend.entity.user.AccountUser;
 import com.example.projectbackend.mapper.UserMapper;
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ public class AuthorizeInterceptor implements HandlerInterceptor {
     @Resource
     UserMapper mapper;
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response,@Nonnull Object handler) {
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         User user = (User)authentication.getPrincipal();
